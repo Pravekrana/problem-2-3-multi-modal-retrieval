@@ -16,5 +16,15 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Unit tests
         run: python -m pytest -q
+      - name: End-to-end run.yaml commands
+        run: |
+          python - <<'PY'
+          import subprocess, yaml
+          with open('run.yaml', encoding='utf-8') as f:
+              config = yaml.safe_load(f)
+          for command in config['run_commands']:
+              print('RUN:', command, flush=True)
+              subprocess.run(command, shell=True, check=True, timeout=600)
+          PY
       - name: Compile source
         run: python -m compileall -q src tests
