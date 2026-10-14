@@ -1,19 +1,9 @@
-# Fill this in before you submit -- our evaluator runs these commands
-# EXACTLY as written, in this order, from a fresh checkout of your fork.
-# Keep every command non-interactive (no prompts) and idempotent.
-
 setup_commands:
-  - "pip install -r requirements.txt"
-  # - add every other setup step here, in order (env vars, downloads, etc.)
-
+  - "python -m pip install -r requirements.txt"
 run_commands:
-  - "python src/main.py --help"
-  # - the real command(s) that actually run your solution
-
-test_commands: []
-  # optional -- commands that run your own tests/checks, if you have any
-
-notes: ""
-  # anything we should know before running this (e.g. "needs a GPU",
-  # "takes about 10 minutes", "expects a sample dataset already present
-  # under data/, see docs/ for where to get it")
+  - "python src/demo.py"
+  - "python -m src.main index --input demo_videos --index index --interval 1 --batch-size 8 --output index_report.json"
+  - "python -m src.main search --index index --query 'a red round object' --top-k 5 --output results.json"
+test_commands:
+  - "python -m pytest -q"
+notes: "First run downloads CLIP ViT-B/32 model/processor (~600 MB); internet required. CPU supported (slow); CUDA optional. Demo videos are synthetic smoke tests, not retrieval benchmarks."
